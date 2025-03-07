@@ -1,2 +1,2 @@
-# dgg
-Drag Guided Generation
+# Drag Guided Generation
+
