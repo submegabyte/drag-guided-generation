@@ -58,8 +58,8 @@ def ddim_sample():
         t = torch.full((shape[0],), ts[i], device=device, dtype=torch.long)
         t_next = torch.full((shape[0],), ts[i+1], device=device, dtype=torch.long)
 
-        alpha_t = alphas_cumprod[t][:, None, None, None]
-        alpha_t_next = alphas_cumprod[t_next][:, None, None, None]
+        alpha_t = alpha_hat[t][:, None, None, None]
+        alpha_t_next = alpha_hat[t_next][:, None, None, None]
         sqrt_alpha_t = alpha_t ** 0.5
         sqrt_alpha_t_next = alpha_t_next ** 0.5
         sqrt_one_minus_alpha_t = (1 - alpha_t) ** 0.5
@@ -67,6 +67,7 @@ def ddim_sample():
         noise_pred = model(x_t, t)  # Predict noise
         x0_pred = (x_t - sqrt_one_minus_alpha_t * noise_pred) / sqrt_alpha_t  # Reconstruct x0
 
+        eta = 0 ## for ddim
         if eta == 0:
             x_t = sqrt_alpha_t_next * x0_pred + (1 - alpha_t_next) ** 0.5 * noise_pred
         else:
